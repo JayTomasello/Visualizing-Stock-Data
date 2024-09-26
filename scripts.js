@@ -660,13 +660,3 @@ function exitApplication() {
             }, 1000); // Add a small delay to show alert if needed
         });
 }
-
-function loadHeader() {
-    fetch("header.html")
-        .then(response => {
-            return response.text()
-        })
-        .then(data => {
-            document.querySelector("body").innerHTML = data;
-        });
-}

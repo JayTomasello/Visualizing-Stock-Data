@@ -1,15 +1,3 @@
-<?php
-session_start();
-
-// Check if the user is logged in
-$isLoggedIn = isset($_SESSION['user']) ? true : false;
-
-// Prevent caching so the user cannot use the back button to access the page
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,11 +8,50 @@ header("Pragma: no-cache");
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script defer src="scripts.js"></script>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 
 <body>
 
-    <?php include 'header.php'; ?>
+    <script>
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload(true);
+            }
+        };
+    </script>
+
+    <header>
+        <h1>[CPS*5745*02] Project 1 - Joseph Tomasello</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a>File</a>
+                <ul>
+                    <li><a onclick="connectToDB()">Login to DB</a></li>
+                    <li><a onclick="loadStockData()">Load Stock_prices Data</a></li>
+                    <li><a onclick="logoutDB()">Logout DB</a></li>
+                    <li><a onclick="exitApplication()">Exit</a></li>
+                </ul>
+            </li>
+            <li><a>View</a>
+                <ul>
+                    <li><a onclick="showLineChartOptions()">Line Chart</a></li>
+                    <li><a onclick="showAreaChartOptions()">Area Chart</a></li>
+                </ul>
+            </li>
+            <li><a>Help</a>
+                <ul>
+                    <li><a onclick="showLoginInfo()">Login Info</a></li>
+                    <li><a onclick="showDeveloperInfo()">Developer Info</a></li>
+                    <li><a onclick="showBrowserOSInfo()">Client</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
 
     <div class="container">
         <!-- Data selection section -->
@@ -51,7 +78,8 @@ header("Pragma: no-cache");
                 <br>
 
                 <!-- Add Generate Graph button -->
-                <button type="button" id="generateGraphButton" style="display: none;" onclick="generateGraph()">Generate Line Graph</button>
+                <button type="button" id="generateGraphButton" style="display: none;" onclick="generateGraph()">Generate
+                    Line Graph</button>
                 <!-- Add new dropdowns for selecting 2 stock symbols for the Area Chart -->
                 <label for="stockSymbol1" id="stockSymbol1Label" style="display: none;">Select First Stock:</label>
                 <select id="stockSymbol1" name="stockSymbol1" style="display: none;">
@@ -66,7 +94,8 @@ header("Pragma: no-cache");
                 <br>
 
                 <!-- Add Generate Area Chart button -->
-                <button type="button" id="generateAreaChartButton" style="display: none;" onclick="generateAreaChart()">Generate Area Chart</button>
+                <button type="button" id="generateAreaChartButton" style="display: none;"
+                    onclick="generateAreaChart()">Generate Area Chart</button>
             </form>
         </div>
 
@@ -88,8 +117,10 @@ header("Pragma: no-cache");
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
-    
+    <footer>
+        <p>Joseph Tomasello &copy; 2024</p>
+    </footer>
+
 </body>
 
 </html>
