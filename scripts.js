@@ -136,6 +136,11 @@ function showAreaChartOptions() {
         return;
     }
 
+    if (!selectedOption && isLoggedIn) {
+        alert("Please select an option (Open Price or Growth Rate).");
+        return;
+    }
+
     if (selectedOption && selectedOption.value === 'growthRate') {
         // Hide the radio buttons since we are focusing on Area Chart for growth rate
         hideRadioButtons();
@@ -148,8 +153,11 @@ function showAreaChartOptions() {
 
         // Populate stock symbol dropdowns
         loadStockSymbols(); // Populate the stock symbol options from the database
-    } else {
-        alert("The Open Price attribute can only be graphed as an Line Chart.");
+    }
+
+    if (selectedOption.value === 'openPrice') {
+        alert("The Open Price attribute can only be graphed as a Line Chart.");
+        return;
     }
 }
 
