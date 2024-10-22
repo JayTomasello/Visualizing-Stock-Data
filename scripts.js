@@ -11,32 +11,55 @@ function connectToDB() {
                 alert(`You are already logged in as ${data.name}.`);
                 isLoggedIn = true; // Set logged in flag to true
             } else {
-                // Prompt for login if not already logged in
-                const login = prompt("Enter your login:");
-                const password = prompt("Enter your password:");
+                // Show custom login modal if not already logged in
+                document.getElementById('loginModal').style.display = 'block';
 
-                if (login && password) {
-                    fetch('login.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `login=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}`
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                displayMessage(data.message); // Display success message
-                                isLoggedIn = true; // Set logged in flag to true
-                            } else if (data.status === 'already_logged_in') {
-                                alert(data.message); // Show already logged in message
-                                isLoggedIn = true;
-                            } else {
-                                alert(data.message); // Show error message in red text
-                            }
+                // Handle the login submission
+                function submitLogin() {
+                    const login = document.getElementById('login').value;
+                    const password = document.getElementById('password').value;
+
+                    if (login && password) {
+                        fetch('login.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `login=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}`
                         })
-                        .catch(error => console.error('Error during login:', error));
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    displayMessage(data.message); // Display success message
+                                    isLoggedIn = true; // Set logged in flag to true
+                                    document.getElementById('loginModal').style.display = 'none'; // Close modal
+                                } else if (data.status === 'already_logged_in') {
+                                    alert(data.message); // Show already logged in message
+                                    isLoggedIn = true;
+                                    document.getElementById('loginModal').style.display = 'none'; // Close modal
+                                } else {
+                                    alert(data.message); // Show error message
+                                }
+                            })
+                            .catch(error => console.error('Error during login:', error));
+                    }
                 }
+
+                // Attach event listener to the login button
+                document.getElementById('submitLogin').onclick = submitLogin;
+
+                // Handle enter key on password input field
+                document.getElementById('password').addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Prevent form submission behavior
+                        submitLogin(); // Trigger login submission
+                    }
+                });
+
+                // Handle cancel button
+                document.getElementById('cancelLogin').onclick = function () {
+                    document.getElementById('loginModal').style.display = 'none'; // Close modal
+                };
             }
         })
         .catch(error => console.error('Error checking login status:', error));
@@ -227,23 +250,84 @@ function drawAreaChart(growthData) {
         const chart = new google.visualization.AreaChart(document.getElementById('stockChart'));
         chart.draw(data, options);
     });
+    // Create a new div element to display the information
+    const existingInfoDiv = document.getElementById("calculationInfo");
+    if (!existingInfoDiv) {
+        // Create a new div element with an id
+        const infoDiv = document.createElement("div");
+        infoDiv.id = "calculationInfo"; // Assign an id for easy removal
+        infoDiv.innerHTML = `
+            <h2><strong>Growth Rate Equation:</strong></h2> 
+            <p>((Last Closing Price of the Year - First Closing Price of the Year) / First Closing Price of the Year) * 100
+            </p>`;
+
+        // Append the infoDiv after the stock chart
+        const graphArea = document.querySelector(".graph-area");
+        graphArea.appendChild(infoDiv);
+    }
 }
 
 function showRadioButtons() {
     if (isDataLoaded) {
-        document.getElementById('openPrice').style.display = 'block';
-        document.getElementById('openPriceLabel').style.display = 'block';
-        document.getElementById('growthRate').style.display = 'block';
-        document.getElementById('growthRateLabel').style.display = 'block';
+        const form = document.getElementById('dataForm');
+
+        // Create and append the radio buttons
+        if (!document.getElementById('openPrice')) {
+            // Open Price Radio Button and Label
+            const openPriceRadio = document.createElement('input');
+            openPriceRadio.type = 'radio';
+            openPriceRadio.id = 'openPrice';
+            openPriceRadio.name = 'dataOption';
+            openPriceRadio.value = 'openPrice';
+
+            const openPriceLabel = document.createElement('label');
+            openPriceLabel.htmlFor = 'openPrice';
+            openPriceLabel.innerHTML = 'Open Price<br>';
+
+            form.appendChild(openPriceRadio);
+            form.appendChild(openPriceLabel);
+        }
+
+        if (!document.getElementById('growthRate')) {
+            // Growth Rate Radio Button and Label
+            const growthRateRadio = document.createElement('input');
+            growthRateRadio.type = 'radio';
+            growthRateRadio.id = 'growthRate';
+            growthRateRadio.name = 'dataOption';
+            growthRateRadio.value = 'growthRate';
+
+            const growthRateLabel = document.createElement('label');
+            growthRateLabel.htmlFor = 'growthRate';
+            growthRateLabel.innerHTML = 'Growth Rate<br>';
+
+            form.appendChild(growthRateRadio);
+            form.appendChild(growthRateLabel);
+        }
     }
 }
 
-// Hide radio buttons initially or when not logged in
 function hideRadioButtons() {
-    document.getElementById('openPrice').style.display = 'none';
-    document.getElementById('openPriceLabel').style.display = 'none';
-    document.getElementById('growthRate').style.display = 'none';
-    document.getElementById('growthRateLabel').style.display = 'none';
+    const form = document.getElementById('dataForm');
+
+    // Remove Open Price Radio Button and its Label
+    const openPriceRadio = document.getElementById('openPrice');
+    const openPriceLabel = document.querySelector('label[for="openPrice"]'); // Target label using 'for' attribute
+    if (openPriceRadio) {
+        form.removeChild(openPriceRadio);
+    }
+    if (openPriceLabel) {
+        form.removeChild(openPriceLabel);
+    }
+
+    // Remove Growth Rate Radio Button and its Label
+    const growthRateRadio = document.getElementById('growthRate');
+    const growthRateLabel = document.querySelector('label[for="growthRate"]'); // Target label using 'for' attribute
+    if (growthRateRadio) {
+        form.removeChild(growthRateRadio);
+    }
+    if (growthRateLabel) {
+        form.removeChild(growthRateLabel);
+    }
 }
 
 // Hide radio buttons initially or when not logged in
@@ -411,10 +495,10 @@ function loadStockSymbols() {
             const symbolSelect1 = document.getElementById('stockSymbol1');
             const symbolSelect2 = document.getElementById('stockSymbol2');
 
-            // Clear previous options
-            symbolChoice.innerHTML = '';
-            symbolSelect1.innerHTML = '';
-            symbolSelect2.innerHTML = '';
+            // Clear previous options and add the default "select" option
+            symbolChoice.innerHTML = '<option value="select" selected disabled>Select Stock Symbol</option>';
+            symbolSelect1.innerHTML = '<option value="select" selected disabled>Select Stock Symbol</option>';
+            symbolSelect2.innerHTML = '<option value="select" selected disabled>Select Stock Symbol</option>';
 
             // Populate the dropdowns with stock symbols
             symbols.forEach(symbol => {
@@ -452,6 +536,13 @@ function loadAvailableMonths() {
             const monthSelect = document.getElementById('monthChoice');
             monthSelect.innerHTML = ''; // Clear previous options
 
+            const defaultOption = document.createElement('option');
+            defaultOption.value = 'select';
+            defaultOption.textContent = 'Select Month/Year';
+            defaultOption.selected = true;
+            defaultOption.disabled = true;
+            monthSelect.appendChild(defaultOption);
+
             months.forEach(month => {
                 const option = document.createElement('option');
                 option.value = month;
@@ -462,18 +553,24 @@ function loadAvailableMonths() {
             // Show the month/year dropdown and label
             document.getElementById('monthChoice').style.display = 'block';
             document.getElementById('monthLabel').style.display = 'block';
+
+            // Initially hide the "Generate Graph" button
+            document.getElementById('generateGraphButton').style.display = 'none';
         })
         .catch(error => {
             console.error('Error fetching available months:', error);
         });
+
+    // Add event listener to month choice dropdown
+    document.getElementById('monthChoice').addEventListener('change', showGenerateGraphButton);
 }
 
 function showGenerateGraphButton() {
     const symbolChoice = document.getElementById('symbolChoice').value;
     const monthChoice = document.getElementById('monthChoice').value;
 
-    // Ensure both symbol and month are selected before showing the button
-    if (symbolChoice && monthChoice) {
+    // Ensure both symbol and month are selected and not default before showing the button
+    if (symbolChoice !== "select" && monthChoice !== "select") {
         document.getElementById('generateGraphButton').style.display = 'block';
     } else {
         document.getElementById('generateGraphButton').style.display = 'none';
@@ -483,13 +580,14 @@ function showGenerateGraphButton() {
 function generateGraph() {
     const symbol = document.getElementById('symbolChoice').value;
     const [year, month] = document.getElementById('monthChoice').value.split('-');
+    const monthChoice = document.getElementById('monthChoice').value;
 
     // Fetch the daily open prices for the selected symbol and month
     fetch(`get-stock-open-prices.php?symbol=${symbol}&year=${year}&month=${month}`)
         .then(response => response.json())
         .then(data => {
             drawStockChart(data); // Generate the line graph
-            displayMessage(`Line graph successfully generated for ${symbol} - ${month}/${year}.`); // Display success message
+            displayMessage(`Line graph successfully generated for ${symbol} - ${monthChoice}.`); // Display success message
         })
         .catch(error => {
             console.error('Error fetching stock data:', error);
@@ -522,7 +620,7 @@ function drawStockChart(stockData) {
         const options = {
             title: `${symbol} - Daily Open Prices (${monthChoice})`,
             hAxis: {
-                title: 'Date',
+                title: 'Date (MM/dd/yyyy)',
                 format: 'MM/dd/yyyy',
                 gridlines: {
                     count: stockData.length // Adjust gridlines based on data length
@@ -559,6 +657,9 @@ function logoutDB() {
                 isLoggedIn = false;
                 isDataLoaded = false;
 
+                // Clear login and password fields for security
+                clearLoginFields();
+
                 // Display a pop-up confirming the logout
                 alert(data.message);
             } else if (data.status === 'error') {
@@ -571,6 +672,12 @@ function logoutDB() {
         });
 }
 
+// Clear login and password fields when modal opens for security
+function clearLoginFields() {
+    document.getElementById('login').value = '';
+    document.getElementById('password').value = '';
+}
+
 function clearMessages() {
     const messageDiv = document.getElementById('message');
     messageDiv.innerHTML = ''; // Clear all messages in the message-area
@@ -579,6 +686,11 @@ function clearMessages() {
 function clearTablesAndCharts() {
     const stockPricesTable = document.getElementById('stockPricesTable');
     const stockChart = document.getElementById('stockChart');
+    const infoDiv = document.getElementById("calculationInfo");
+
+    if (infoDiv) {
+        infoDiv.remove(); // Remove the div if it exists
+    }
 
     // Clear any existing stock prices table and chart
     if (stockPricesTable) stockPricesTable.innerHTML = '';
@@ -599,8 +711,8 @@ function clearDataSelection() {
     monthChoice.style.display = 'none';
     document.getElementById('symbolLabel').style.display = 'none';
     document.getElementById('monthLabel').style.display = 'none';
-    document.getElementById('openPrice').checked = false;
-    document.getElementById('growthRate').checked = false;
+    // document.getElementById('openPrice').checked = false;
+    // document.getElementById('growthRate').checked = false;
     hideRadioButtons();
     hideAreaChartOptions();
 
@@ -637,7 +749,8 @@ function checkStocksSelected() {
     const stock1 = document.getElementById('stockSymbol1').value;
     const stock2 = document.getElementById('stockSymbol2').value;
 
-    if (stock1 && stock2 && stock1 !== stock2) {
+    // Only show the button if both stock selections are not the default "select" option and they are different
+    if (stock1 !== 'select' && stock2 !== 'select' && stock1 !== stock2) {
         document.getElementById('generateAreaChartButton').style.display = 'block';
     } else {
         document.getElementById('generateAreaChartButton').style.display = 'none';

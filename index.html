@@ -58,21 +58,16 @@
         <div class="data-selection">
             <h2>Data Selection</h2>
             <form id="dataForm">
-                <!-- New Radio Buttons for Open Price and Growth Rate -->
-                <input type="radio" id="openPrice" name="dataOption" value="openPrice" style="display: none;">
-                <label for="openPrice" style="display: none;" id="openPriceLabel">Open Price<br></label>
-
-                <input type="radio" id="growthRate" name="dataOption" value="growthRate" style="display: none;">
-                <label for="growthRate" style="display: none;" id="growthRateLabel">Growth Rate</label>
-
                 <label for="symbolChoice" id="symbolLabel" style="display: none;">Choose Stock Symbol:</label>
                 <select id="symbolChoice" name="symbolChoice" style="display: none;" onchange="loadAvailableMonths()">
+                    <option value="select" selected disabled>Select Stock Symbol</option>
                     <!-- Dynamically populate available stock symbols here -->
                 </select>
                 <br>
 
-                <label for="monthChoice" id="monthLabel" style="display: none;">Choose Month/Year:</label>
+                <label for="monthChoice" id="monthLabel" style="display: none;">Choose Year-Month:</label>
                 <select id="monthChoice" name="monthChoice" style="display: none;" onchange="showGenerateGraphButton()">
+                    <option value="select" selected disabled>Select Month/Year</option>
                     <!-- Dynamically populate available months/years here based on symbol -->
                 </select>
                 <br>
@@ -120,6 +115,20 @@
     <footer>
         <p>Joseph Tomasello &copy; 2024</p>
     </footer>
+
+    <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+        <div style="background-color:white; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 300px;">
+            <h2>Login</h2>
+            <label for="login">Login:</label>
+            <input type="text" id="login" required>
+            <br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <br><br>
+            <button id="submitLogin">Login</button>
+            <button id="cancelLogin">Cancel</button>
+        </div>
+    </div>
 
 </body>
 
