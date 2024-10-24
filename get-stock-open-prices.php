@@ -1,9 +1,9 @@
 <?php
 include 'dbconfig.php';
 
-$symbol = $_GET['symbol'];  // Symbol passed from the frontend
-$year = $_GET['year'];      // Year passed from the frontend
-$month = $_GET['month'];    // Month passed from the frontend
+$symbol = $_GET['symbol'];
+$year = $_GET['year'];
+$month = $_GET['month'];
 
 // Construct the date filter
 $dateFilter = $year . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);

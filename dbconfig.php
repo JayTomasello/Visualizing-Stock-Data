@@ -1,8 +1,8 @@
 <?php
-$host = 'imc.kean.edu';  // Your database host
-$username = 'tomaselj';  // Your database username
-$password = '1168753';  // Your database password
-$dbname = 'datamining';  // Your database name
+$host = 'imc.kean.edu';     // Database host
+$username = 'tomaselj';     // Database username
+$password = '1168753';      // Database password
+$dbname = 'datamining';     // Database name
 
 // Create connection
 $conn = new mysqli($host, $username, $password, $dbname);

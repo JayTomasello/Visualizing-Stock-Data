@@ -1,12 +1,12 @@
 <?php
 session_start();
-include 'dbconfig.php'; // Database connection
+include 'dbconfig.php';
 
 // Check if the user is already logged in
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     echo json_encode(['status' => 'already_logged_in', 'message' => 'You are already logged in as ' . $user['name'] . '.']);
-    exit(); // Stop further execution
+    exit();
 }
 
 $login = $_POST['login'];

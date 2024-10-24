@@ -1,5 +1,5 @@
-let isLoggedIn = false; // Flag to check if the user is logged in
-let isDataLoaded = false; // Flag to check if data is loaded
+let isLoggedIn = false;     // Flag to check if the user is logged in
+let isDataLoaded = false;   // Flag to check if data is loaded
 
 // Function to handle logging into the DB
 function connectToDB() {
@@ -45,7 +45,6 @@ function connectToDB() {
                     }
                 }
 
-                // Attach event listener to the login button
                 document.getElementById('submitLogin').onclick = submitLogin;
 
                 // Handle enter key on password input field
@@ -101,6 +100,9 @@ function loadStockData() {
     clearDataSelection();
     hideLineChartOptions();
 
+    // Display loading message in stockPricesTable div
+    document.getElementById('stockPricesTable').innerHTML = '<p>Loading table data...</p>';
+
     fetch('get-all-stock-prices.php')
         .then(response => response.json())
         .then(data => {
@@ -112,7 +114,10 @@ function loadStockData() {
             // Show the radio buttons after dataset is loaded
             showRadioButtons();
         })
-        .catch(error => console.error('Error loading stock prices:', error));
+        .catch(error => {
+            console.error('Error loading stock prices:', error);
+            document.getElementById('stockPricesTable').innerHTML = '<p>Error loading table data.</p>';
+        });
 }
 
 // Show Line Chart options if radio button is selected
@@ -386,60 +391,6 @@ function showBrowserOSInfo() {
     alert(fullInfo);
 }
 
-function fetchStockPrices() {
-    fetch('get-stock-prices.php')
-        .then(response => response.json())
-        .then(data => {
-            drawTable(data);
-        })
-        .catch(error => {
-            console.error('Error fetching stock prices:', error);
-        });
-}
-
-function drawTable(data) {
-    google.charts.load('current', {
-        packages: ['table']
-    });
-    google.charts.setOnLoadCallback(function () {
-        const googleData = new google.visualization.DataTable();
-
-        googleData.addColumn('number', 'ID'); // ID should be number
-        googleData.addColumn('string', 'Symbol'); // Symbol is a string
-        googleData.addColumn('string', 'Date'); // Date should be a string (date can be formatted later if needed)
-        googleData.addColumn('number', 'Open'); // Open is float
-        googleData.addColumn('number', 'High'); // High is float
-        googleData.addColumn('number', 'Low'); // Low is float
-        googleData.addColumn('number', 'Close'); // Close is float
-        googleData.addColumn('number', 'Volume'); // Volume is bigint, handled as a number
-        googleData.addColumn('number', 'Adjusted Close'); // Adjusted Close is float
-
-        data.forEach(stock => {
-            googleData.addRow([
-                stock.id, // ID is a number
-                stock.symbol, // Symbol is a string
-                stock.date, // Date is a string
-                stock.open, // Open is a number
-                stock.high, // High is a number
-                stock.low, // Low is a number
-                stock.close, // Close is a number
-                stock.volume, // Volume is a number
-                stock.adj_close // Adjusted Close is a number
-            ]);
-        });
-
-        const table = new google.visualization.Table(document.getElementById('stockPricesTable'));
-
-        table.draw(googleData, {
-            showRowNumber: true,
-            width: '100%',
-            height: 'auto',
-            page: 'enable',
-            pageSize: 20
-        });
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     // Initially hide the symbol, month/year dropdowns, and generate graph button
     hideLineChartOptions();
@@ -483,6 +434,7 @@ function drawStockPricesTable(stockPrices) {
             page: 'enable',
             pageSize: 20
         });
+
     });
 }
 
@@ -538,7 +490,7 @@ function loadAvailableMonths() {
 
             const defaultOption = document.createElement('option');
             defaultOption.value = 'select';
-            defaultOption.textContent = 'Select Month/Year';
+            defaultOption.textContent = 'Select Year-Month';
             defaultOption.selected = true;
             defaultOption.disabled = true;
             monthSelect.appendChild(defaultOption);
@@ -711,8 +663,6 @@ function clearDataSelection() {
     monthChoice.style.display = 'none';
     document.getElementById('symbolLabel').style.display = 'none';
     document.getElementById('monthLabel').style.display = 'none';
-    // document.getElementById('openPrice').checked = false;
-    // document.getElementById('growthRate').checked = false;
     hideRadioButtons();
     hideAreaChartOptions();
 
@@ -766,7 +716,7 @@ function exitApplication() {
                 // Notify the user that the session and cookies have been cleared
                 alert(data.message);
             } else if (data.status === 'error') {
-                // Notify the user they are not logged in (optional)
+                // Notify the user they are not logged in
                 console.log(data.message);
             }
         })
@@ -778,6 +728,6 @@ function exitApplication() {
             // Fallback to a blank page if the browser prevents closing the window
             setTimeout(() => {
                 window.location.href = 'about:blank';
-            }, 1000); // Add a small delay to show alert if needed
+            }, 1000); // Add a small delay to show alert
         });
 }
