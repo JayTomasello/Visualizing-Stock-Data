@@ -9,5 +9,5 @@ URL: https://obi.kean.edu/~tomaselj@kean.edu/CPS5745/index.html
 - Login (Username): monkey
 - Password: aaa
 
-## Project 1 - User's Guide
+## User's Guide
 Link: https://docs.google.com/presentation/d/1502ZdQzu85Eahm2en_YEFNQr8m750w5Ur4ak2j9fj5w/edit?usp=sharing
