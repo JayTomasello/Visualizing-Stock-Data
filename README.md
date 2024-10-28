@@ -1,5 +1,5 @@
 # CPS*5745 - Project 1
-Objective: Access a dataset containing historical information about the stock market stored on a MySQL server, and display charts on a web page to provide meaningful information about its contents.
+Objective: Access a dataset containing historical information about the US stock market stored on a MySQL server, and display charts on a web page to provide meaningful information about its contents.
 
 Languages: MySQL, HTML, JavaScript (JS), and PHP
 
