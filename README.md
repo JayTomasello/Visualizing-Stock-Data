@@ -10,4 +10,4 @@ URL: https://obi.kean.edu/~tomaselj@kean.edu/CPS5745/index.html
 - Password: aaa
 
 ## Project 1 - User's Guide
-[Project 1 - User's Guide] (https://docs.google.com/presentation/d/1502ZdQzu85Eahm2en_YEFNQr8m750w5Ur4ak2j9fj5w/edit?usp=sharing)
+Link: https://docs.google.com/presentation/d/1502ZdQzu85Eahm2en_YEFNQr8m750w5Ur4ak2j9fj5w/edit?usp=sharing
