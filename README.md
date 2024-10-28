@@ -2,6 +2,7 @@
 Objective: Access a dataset containing historical information about the stock market stored on a MySQL server, and display charts on a web page to provide meaningful information about its contents.
 
 Languages: MySQL, HTML, JavaScript (JS), and PHP
+
 URL: https://obi.kean.edu/~tomaselj@kean.edu/CPS5745/index.html
 
 ## Sample Login
