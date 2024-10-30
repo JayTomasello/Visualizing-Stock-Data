@@ -1,5 +1,5 @@
-# CPS*5745 - Project 1
-Objective: Provide a web-based visualization tool to chart historical data related to the US stock market accessed via a MySQL server.
+# CPS*5745 - U.S. Stock Data Visualization
+Objective: Provide a web-based visualization tool to chart historical data related to the U.S. stock market accessed via a MySQL server.
 
 Languages: MySQL, HTML, CSS, JavaScript (JS), and PHP
 
