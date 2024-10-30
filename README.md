@@ -13,5 +13,5 @@ URL: https://obi.kean.edu/~tomaselj@kean.edu/CPS5745/index.html
 Link: https://docs.google.com/presentation/d/1502ZdQzu85Eahm2en_YEFNQr8m750w5Ur4ak2j9fj5w/edit?usp=sharing
 
 ## References
-- ***Project design based on an assignment requirements authored by Dr. Ching-Yu Huang for CPS\*5745 at Kean University.***
+- ***Project design based on assignment requirements authored by Dr. Ching-Yu Huang for CPS\*5745 at Kean University.***
 - ***All code authored by Joseph "Jay" Tomasello***
