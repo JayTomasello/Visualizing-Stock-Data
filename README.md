@@ -3,6 +3,7 @@ Objective: Provide a web-based visualization tool to chart historical data relat
 
 Languages: MySQL, HTML, CSS, JavaScript (JS), and PHP
 
+## Try it out!
 URL: https://obi.kean.edu/~tomaselj@kean.edu/CPS5745/index.html
 
 ## Sample Login
